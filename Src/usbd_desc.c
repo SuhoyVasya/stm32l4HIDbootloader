@@ -1,67 +1,7 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : usbd_desc.c
-  * @version        : v2.0_Cube
-  * @brief          : This file implements the USB device descriptors.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
-
-/* Includes ------------------------------------------------------------------*/
 #include "usbd_core.h"
 #include "usbd_desc.h"
 #include "usbd_conf.h"
 
-/* USER CODE BEGIN INCLUDE */
-
-/* USER CODE END INCLUDE */
-
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
-/* Private variables ---------------------------------------------------------*/
-
-/* USER CODE END PV */
-
-/** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
-  * @{
-  */
-
-/** @addtogroup USBD_DESC
-  * @{
-  */
-
-/** @defgroup USBD_DESC_Private_TypesDefinitions USBD_DESC_Private_TypesDefinitions
-  * @brief Private types.
-  * @{
-  */
-
-/* USER CODE BEGIN PRIVATE_TYPES */
-
-/* USER CODE END PRIVATE_TYPES */
-
-/**
-  * @}
-  */
-
-/** @defgroup USBD_DESC_Private_Defines USBD_DESC_Private_Defines
-  * @brief Private defines.
-  * @{
-  */
 
 #define USBD_VID     1155
 #define USBD_LANGID_STRING     1033
@@ -73,49 +13,9 @@
 
 #define USB_SIZ_BOS_DESC            0x0C
 
-/* USER CODE BEGIN PRIVATE_DEFINES */
-
-/* USER CODE END PRIVATE_DEFINES */
-
-/**
-  * @}
-  */
-
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-/** @defgroup USBD_DESC_Private_Macros USBD_DESC_Private_Macros
-  * @brief Private macros.
-  * @{
-  */
-
-/* USER CODE BEGIN PRIVATE_MACRO */
-
-/* USER CODE END PRIVATE_MACRO */
-
-/**
-  * @}
-  */
-  
-/** @defgroup USBD_DESC_Private_FunctionPrototypes USBD_DESC_Private_FunctionPrototypes
-  * @brief Private functions declaration.
-  * @{
-  */
-  
 static void Get_SerialNum(void);
 static void IntToUnicode(uint32_t value, uint8_t * pbuf, uint8_t len);
-  
-/**
-  * @}
-  */  
-  
-
-/** @defgroup USBD_DESC_Private_FunctionPrototypes USBD_DESC_Private_FunctionPrototypes
-  * @brief Private functions declaration for FS.
-  * @{
-  */
-
+ 
 uint8_t * USBD_FS_DeviceDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
 uint8_t * USBD_FS_LangIDStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
 uint8_t * USBD_FS_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
@@ -131,15 +31,6 @@ uint8_t * USBD_FS_USRStringDesc(USBD_SpeedTypeDef speed, uint8_t idx, uint16_t *
 #if (USBD_LPM_ENABLED == 1)
 uint8_t * USBD_FS_USR_BOSDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
 #endif /* (USBD_LPM_ENABLED == 1) */
-
-/**
-  * @}
-  */
-
-/** @defgroup USBD_DESC_Private_Variables USBD_DESC_Private_Variables
-  * @brief Private variables.
-  * @{
-  */
 
 USBD_DescriptorsTypeDef FS_Desc =
 {
@@ -211,14 +102,6 @@ __ALIGN_BEGIN uint8_t USBD_FS_BOSDesc[USB_SIZ_BOS_DESC] __ALIGN_END =
 };
 #endif /* (USBD_LPM_ENABLED == 1) */
 
-/**
-  * @}
-  */
-
-/** @defgroup USBD_DESC_Private_Variables USBD_DESC_Private_Variables
-  * @brief Private variables.
-  * @{
-  */
 
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
@@ -247,21 +130,7 @@ __ALIGN_BEGIN uint8_t USBD_StringSerial[USB_SIZ_STRING_SERIAL] __ALIGN_END = {
   USB_DESC_TYPE_STRING,
 };
 
-/**
-  * @}
-  */
 
-/** @defgroup USBD_DESC_Private_Functions USBD_DESC_Private_Functions
-  * @brief Private functions.
-  * @{
-  */
-
-/**
-  * @brief  Return the device descriptor
-  * @param  speed : Current device speed
-  * @param  length : Pointer to data length variable
-  * @retval Pointer to descriptor buffer
-  */
 uint8_t * USBD_FS_DeviceDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
   UNUSED(speed);
@@ -434,16 +303,3 @@ static void IntToUnicode(uint32_t value, uint8_t * pbuf, uint8_t len)
     pbuf[2 * idx + 1] = 0;
   }
 }
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
