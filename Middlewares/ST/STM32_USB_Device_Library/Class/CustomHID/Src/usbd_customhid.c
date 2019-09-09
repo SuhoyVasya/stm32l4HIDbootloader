@@ -48,7 +48,7 @@ __ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_CfgFSDesc[USB_CUSTOM_HID_CONFIG_DES
 
   //    ************* Descriptor of CUSTOM HID interface ***************
   0x09,         										//    bLength: Interface Descriptor size
-  USB_DESC_TYPE_INTERFACE,//    bDescriptorType: Interface descriptor type
+  USB_DESC_TYPE_INTERFACE,					//    bDescriptorType: Interface descriptor type
   0x00,         										//    bInterfaceNumber: Number of Interface
   0x00,         										//    bAlternateSetting: Alternate setting
   0x02,         										//    bNumEndpoints
@@ -81,7 +81,7 @@ __ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_CfgFSDesc[USB_CUSTOM_HID_CONFIG_DES
 	
   0x07,	         										//     bLength: Endpoint Descriptor size 
   USB_DESC_TYPE_ENDPOINT,						//     bDescriptorType: 
-  CUSTOM_HID_EPOUT_ADDR,  					//    bEndpointAddress: Endpoint Address (OUT)
+  CUSTOM_HID_EPOUT_ADDR,  					//     bEndpointAddress: Endpoint Address (OUT)
   0x03,															//     bmAttributes: Interrupt endpoint 
   CUSTOM_HID_EPOUT_SIZE,						//     wMaxPacketSize: 2 Bytes max  
   0x00,

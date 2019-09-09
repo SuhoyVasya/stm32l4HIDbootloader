@@ -1,105 +1,14 @@
-/**
-  ******************************************************************************
-  * @file    usbd_req.c
-  * @author  MCD Application Team
-  * @brief   This file provides the standard USB requests following chapter 9.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2015 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                      http://www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
-
-/* Includes ------------------------------------------------------------------*/
 #include "usbd_ctlreq.h"
 #include "usbd_ioreq.h"
 
-
-/** @addtogroup STM32_USBD_STATE_DEVICE_LIBRARY
-  * @{
-  */
-
-
-/** @defgroup USBD_REQ
-  * @brief USB standard requests module
-  * @{
-  */
-
-/** @defgroup USBD_REQ_Private_TypesDefinitions
-  * @{
-  */
-/**
-  * @}
-  */
-
-
-/** @defgroup USBD_REQ_Private_Defines
-  * @{
-  */
-
-/**
-  * @}
-  */
-
-
-/** @defgroup USBD_REQ_Private_Macros
-  * @{
-  */
-/**
-  * @}
-  */
-
-
-/** @defgroup USBD_REQ_Private_Variables
-  * @{
-  */
-/**
-  * @}
-  */
-
-
-/** @defgroup USBD_REQ_Private_FunctionPrototypes
-  * @{
-  */
-static void USBD_GetDescriptor(USBD_HandleTypeDef *pdev ,
-                               USBD_SetupReqTypedef *req);
-
-static void USBD_SetAddress(USBD_HandleTypeDef *pdev ,
-                            USBD_SetupReqTypedef *req);
-
-static void USBD_SetConfig(USBD_HandleTypeDef *pdev ,
-                           USBD_SetupReqTypedef *req);
-
-static void USBD_GetConfig(USBD_HandleTypeDef *pdev ,
-                           USBD_SetupReqTypedef *req);
-
-static void USBD_GetStatus(USBD_HandleTypeDef *pdev ,
-                           USBD_SetupReqTypedef *req);
-
-static void USBD_SetFeature(USBD_HandleTypeDef *pdev ,
-                            USBD_SetupReqTypedef *req);
-
-static void USBD_ClrFeature(USBD_HandleTypeDef *pdev ,
-                            USBD_SetupReqTypedef *req);
-
+static void USBD_GetDescriptor(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+static void USBD_SetAddress(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+static void USBD_SetConfig(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+static void USBD_GetConfig(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+static void USBD_GetStatus(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+static void USBD_SetFeature(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+static void USBD_ClrFeature(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
 static uint8_t USBD_GetLen(uint8_t *buf);
-
-/**
-  * @}
-  */
-
-
-/** @defgroup USBD_REQ_Private_Functions
-  * @{
-  */
-
 
 /**
 * @brief  USBD_StdDevReq
@@ -831,18 +740,3 @@ static uint8_t USBD_GetLen(uint8_t *buf)
 
     return len;
 }
-/**
-  * @}
-  */
-
-
-/**
-  * @}
-  */
-
-
-/**
-  * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
