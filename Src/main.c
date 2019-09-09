@@ -1,5 +1,4 @@
 #include "stm32l4xx.h"                  // Device header
-
 #include "main.h"
 #include "usb_device.h"
 #include "usbd_customhid.h"
