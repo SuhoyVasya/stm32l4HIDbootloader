@@ -1,7 +1,8 @@
-#include "stm32l4xx.h"                  // Device header
+#include "stm32l4xx.h" 
 #include "main.h"
 #include "usb_device.h"
 #include "usbd_customhid.h"
+#include "checksum.h"
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 //extern USBD_HandleTypeDef  *hUsbDevice_0;
@@ -13,6 +14,8 @@ FlagStatus USBDataOutReady = RESET;
 
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+
+
 
 int main(void)
 {
@@ -51,7 +54,7 @@ int main(void)
 		  USBDatainReady = RESET;
 	  }
 
-	  USB_TX_Buffer[1] = HAL_GPIO_ReadPin(JOY_CENTER_GPIO_Port, JOY_CENTER_Pin);
+	  /*USB_TX_Buffer[1] = HAL_GPIO_ReadPin(JOY_CENTER_GPIO_Port, JOY_CENTER_Pin);
 	  USB_TX_Buffer[2] = HAL_GPIO_ReadPin(JOY_LEFT_GPIO_Port, JOY_LEFT_Pin);
 	  USB_TX_Buffer[3] = HAL_GPIO_ReadPin(JOY_RIGHT_GPIO_Port, JOY_RIGHT_Pin);
 	  USB_TX_Buffer[4] = HAL_GPIO_ReadPin(JOY_UP_GPIO_Port, JOY_UP_Pin);
@@ -65,13 +68,13 @@ int main(void)
 	  else
 		  USBDataOutReady = RESET;
 
-	  USB_TX_Buffer[7] = 0x55;
-	  USB_TX_Buffer[8] = 0xAA;
+	  USB_TX_Buffer[7] = 0x66;
+	  USB_TX_Buffer[8] = 0x66;
 
 	  if(USBDataOutReady == SET)
 		  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,USB_TX_Buffer,ARRAY2HOST+1); // To send usb buffer to PC
 
-//	  HAL_Delay(50);
+//	  HAL_Delay(50);*/
   }
 }
 

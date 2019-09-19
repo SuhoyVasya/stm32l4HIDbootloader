@@ -34,23 +34,24 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 	    0x09, 0x02,                    //   USAGE (Vendor Usage 2)
 	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
 
-	    0x85, 0x03,                    //   REPORT_ID (3)
+	    0x85, 0x03,                    //   REPORT_ID (3)												//CHECKSUM REPORT FROM HOST						
 	    0x09, 0x03,                    //   USAGE (Vendor Usage 3)
 	    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
 	    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
-	    0x95, ARRAY2ST, 							 //		RPT3_COUNT, //   REPORT_COUNT (N)
+	    0x95, 0x04, 							 		 //		RPT3_COUNT, //   REPORT_COUNT (N)
 	    0xb1, 0x82,                    //   FEATURE (Data,Var,Abs,Vol)
 	    0x85, 0x03,                    //   REPORT_ID (3)
 	    0x09, 0x03,                    //   USAGE (Vendor Usage 3)
 	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
 
-	    0x85, 0x04,                    //   REPORT_ID (4)
+	    0x85, 0x04,                    //   REPORT_ID (4) 											//STATUS REPORT TO HOST
 	    0x09, 0x04,                    //   USAGE (Vendor Usage 4)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
-	    0x95, ARRAY2HOST, 						 //		RPT4_COUNT,  //   REPORT_COUNT (N)
+	    0x95, 0x01, 						 			 //		RPT4_COUNT,  //   REPORT_COUNT (N)
 	    0x81, 0x82,                    //   INPUT (Data,Var,Abs,Vol)
-			0xC0    											 //		END COLLECTION
+			
+			0xC0    											 //		END COLLECTION			
 };
 
 USBD_HandleTypeDef  *hUsbDevice_0;	// Need for CUSTOM_HID_OutEvent_FS
