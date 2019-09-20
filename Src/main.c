@@ -5,7 +5,6 @@
 #include "checksum.h"
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
-//extern USBD_HandleTypeDef  *hUsbDevice_0;
 uint8_t USB_RX_Buffer[64];
 uint8_t USB_TX_Buffer[64];
 FlagStatus USBDatainReady = RESET;
@@ -15,7 +14,9 @@ FlagStatus USBDataOutReady = RESET;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 
-
+uint8_t status = 0;
+uint32_t size = 0;
+uint32_t check = 0;
 
 int main(void)
 {
@@ -25,10 +26,42 @@ int main(void)
 	SystemClock_Config();
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
-	
+	checksum_reset();	
+		
   while (1)
-  {
-	  if(USBDatainReady == SET)
+  {		
+		if(USBDatainReady == SET)
+	  {
+			USBDatainReady = RESET;
+		  switch(USB_RX_Buffer[0])
+		  {
+					case 1: 
+						size = *(uint32_t *) (&USB_RX_Buffer[1]);
+						status=0;
+						break;	
+					case 2:
+						checksum_update(&USB_RX_Buffer[1],0x20);
+						status=0;
+						break;
+					case 3:
+						check = *(uint32_t *) (&USB_RX_Buffer[1]);
+						if(check == checksum_get_value()) {
+							status = 0;						
+						} else {
+							status = 1;
+						}
+						break;
+					default: break;
+		  }
+		  
+			USB_TX_Buffer[0] = 4;
+			USB_TX_Buffer[1] = status;
+			USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,USB_TX_Buffer,2);
+	  }		
+	}
+}
+		
+	  /*if(USBDatainReady == SET)
 	  {
 		  if(USB_RX_Buffer[1])
 			  LED_Status = SET;
@@ -54,7 +87,7 @@ int main(void)
 		  USBDatainReady = RESET;
 	  }
 
-	  /*USB_TX_Buffer[1] = HAL_GPIO_ReadPin(JOY_CENTER_GPIO_Port, JOY_CENTER_Pin);
+	  USB_TX_Buffer[1] = HAL_GPIO_ReadPin(JOY_CENTER_GPIO_Port, JOY_CENTER_Pin);
 	  USB_TX_Buffer[2] = HAL_GPIO_ReadPin(JOY_LEFT_GPIO_Port, JOY_LEFT_Pin);
 	  USB_TX_Buffer[3] = HAL_GPIO_ReadPin(JOY_RIGHT_GPIO_Port, JOY_RIGHT_Pin);
 	  USB_TX_Buffer[4] = HAL_GPIO_ReadPin(JOY_UP_GPIO_Port, JOY_UP_Pin);
@@ -75,13 +108,9 @@ int main(void)
 		  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,USB_TX_Buffer,ARRAY2HOST+1); // To send usb buffer to PC
 
 //	  HAL_Delay(50);*/
-  }
-}
+ 
 
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};

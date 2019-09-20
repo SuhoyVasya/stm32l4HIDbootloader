@@ -13,40 +13,40 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 	    0xa1, 0x01,                    // 	COLLECTION (Application)
 	
 	    0x85, 0x01,                    //   REPORT_ID (1)
-	    0x09, 0x01,                    //   USAGE (Vendor Usage 1)
+	    0x09, 0x01,                    //   USAGE (FRAMES COUNT FROM HOST)
 	    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-	    0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
+	    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
-	    0x95, 0x01,                    //   REPORT_COUNT (1)
+	    0x95, 0x04,                    //   REPORT_COUNT (1)
 	    0xb1, 0x82,                    //   FEATURE (Data,Var,Abs,Vol)
-	    0x85, 0x01,                    //   REPORT_ID (1)
-	    0x09, 0x01,                    //   USAGE (Vendor Usage 1)
+	    0x85, 0x01,                    //   REPORT_ID (1)     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	    0x09, 0x01,                    //   USAGE (FRAMES COUNT FROM HOST)
 	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
 
 	    0x85, 0x02,                    //   REPORT_ID (2)
-	    0x09, 0x02,                    //   USAGE (Vendor Usage 2)
+	    0x09, 0x02,                    //   USAGE (FIRMWARE FROM HOST)
 	    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-	    0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
+	    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
-	    0x95, 0x01,                    //   REPORT_COUNT (1)
+	    0x95, 0x20,                    //   REPORT_COUNT (1)
 	    0xb1, 0x82,                    //   FEATURE (Data,Var,Abs,Vol)
 	    0x85, 0x02,                    //   REPORT_ID (2)
-	    0x09, 0x02,                    //   USAGE (Vendor Usage 2)
+	    0x09, 0x02,                    //   USAGE (FIRMWARE FROM HOST)
 	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
 
-	    0x85, 0x03,                    //   REPORT_ID (3)												//CHECKSUM REPORT FROM HOST						
-	    0x09, 0x03,                    //   USAGE (Vendor Usage 3)
+	    0x85, 0x03,                    //   REPORT_ID (3)									
+	    0x09, 0x03,                    //   USAGE (CHECKSUM FROM HOST)
 	    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
 	    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
 	    0x95, 0x04, 							 		 //		RPT3_COUNT, //   REPORT_COUNT (N)
 	    0xb1, 0x82,                    //   FEATURE (Data,Var,Abs,Vol)
 	    0x85, 0x03,                    //   REPORT_ID (3)
-	    0x09, 0x03,                    //   USAGE (Vendor Usage 3)
+	    0x09, 0x03,                    //   USAGE (CHECKSUM FROM HOST)
 	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
 
-	    0x85, 0x04,                    //   REPORT_ID (4) 											//STATUS REPORT TO HOST
-	    0x09, 0x04,                    //   USAGE (Vendor Usage 4)
+	    0x85, 0x04,                    //   REPORT_ID (4)
+	    0x09, 0x04,                    //   USAGE (STATUS TO HOST)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
 	    0x95, 0x01, 						 			 //		RPT4_COUNT,  //   REPORT_COUNT (N)
 	    0x81, 0x82,                    //   INPUT (Data,Var,Abs,Vol)
@@ -89,8 +89,8 @@ static int8_t CUSTOM_HID_DeInit_FS(void)
   */
 static int8_t CUSTOM_HID_OutEvent_FS(uint8_t event_idx, uint8_t state)
 { 
-	USBD_CUSTOM_HID_HandleTypeDef     *hhid = (USBD_CUSTOM_HID_HandleTypeDef *)hUsbDevice_0->pClassData;
-	for (uint8_t i = 0; i < ARRAY2ST+1; i++)
+	USBD_CUSTOM_HID_HandleTypeDef     *hhid = (USBD_CUSTOM_HID_HandleTypeDef *)hUsbDevice_0->pClassData;	
+	for (uint8_t i = 0; i < 0x21; i++)				// Max packet size for OUT
 	{
 	  USB_RX_Buffer[i] = hhid->Report_buf[i]; // To read usb data from PC
 	}
