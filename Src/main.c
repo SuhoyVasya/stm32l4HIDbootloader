@@ -17,6 +17,7 @@ static void MX_GPIO_Init(void);
 uint8_t status = 0;
 uint32_t size = 0;
 uint32_t check = 0;
+uint32_t packages_count = 0;
 
 int main(void)
 {
@@ -37,77 +38,50 @@ int main(void)
 		  {
 					case 1: 
 						size = *(uint32_t *) (&USB_RX_Buffer[1]);
-						status=0;
-						break;	
-					case 2:
-						checksum_update(&USB_RX_Buffer[1],0x20);
+						USBDataOutReady = SET;
 						status=0;
 						break;
+					
+					case 2:
+						if (size == 0) {
+							USBDataOutReady = SET;
+							status=1;
+							packages_count = 0;
+							break;
+						}
+						packages_count++;
+						checksum_update(&USB_RX_Buffer[1],0x20);
+						if(packages_count == size) {
+							USBDataOutReady = SET;
+							status = 0;
+							packages_count = 0;
+							size = 0;
+						}						
+						break;
+						
 					case 3:
+						USBDataOutReady = SET;
 						check = *(uint32_t *) (&USB_RX_Buffer[1]);
 						if(check == checksum_get_value()) {
 							status = 0;						
 						} else {
 							status = 1;
 						}
+						checksum_reset();
 						break;
+						
 					default: break;
 		  }
 		  
-			USB_TX_Buffer[0] = 4;
-			USB_TX_Buffer[1] = status;
-			USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,USB_TX_Buffer,2);
+			if (USBDataOutReady == SET) {
+				USB_TX_Buffer[0] = 4;
+				USB_TX_Buffer[1] = status;
+				USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,USB_TX_Buffer,2);
+				USBDataOutReady = RESET;
+			}
 	  }		
 	}
-}
-		
-	  /*if(USBDatainReady == SET)
-	  {
-		  if(USB_RX_Buffer[1])
-			  LED_Status = SET;
-		  else
-			  LED_Status = RESET;
-
-		  switch(USB_RX_Buffer[0] & 0x3)
-		  {
-					case 1: 
-						if(LED_Status == SET)
-							HAL_GPIO_WritePin(LD_R_GPIO_Port, LD_R_Pin, GPIO_PIN_SET);
-						else
-		  	  		HAL_GPIO_WritePin(LD_R_GPIO_Port, LD_R_Pin, GPIO_PIN_RESET);
-  	  	  	break;
-					case 2:
-						if(LED_Status == SET)
-							HAL_GPIO_WritePin(LD_G_GPIO_Port, LD_G_Pin, GPIO_PIN_SET);
-		  	  	else
-		  	  		HAL_GPIO_WritePin(LD_G_GPIO_Port, LD_G_Pin, GPIO_PIN_RESET);
-  	  	  	break;
-					default: break;
-		  }
-		  USBDatainReady = RESET;
-	  }
-
-	  USB_TX_Buffer[1] = HAL_GPIO_ReadPin(JOY_CENTER_GPIO_Port, JOY_CENTER_Pin);
-	  USB_TX_Buffer[2] = HAL_GPIO_ReadPin(JOY_LEFT_GPIO_Port, JOY_LEFT_Pin);
-	  USB_TX_Buffer[3] = HAL_GPIO_ReadPin(JOY_RIGHT_GPIO_Port, JOY_RIGHT_Pin);
-	  USB_TX_Buffer[4] = HAL_GPIO_ReadPin(JOY_UP_GPIO_Port, JOY_UP_Pin);
-	  USB_TX_Buffer[5] = HAL_GPIO_ReadPin(JOY_DOWN_GPIO_Port, JOY_DOWN_Pin);
-	  USB_TX_Buffer[6] = HAL_GPIO_ReadPin(LD_R_GPIO_Port, LD_R_Pin) | HAL_GPIO_ReadPin(LD_G_GPIO_Port, LD_G_Pin) << 1;
-	  if (USB_TX_Buffer[1] || USB_TX_Buffer[2] || USB_TX_Buffer[3] || USB_TX_Buffer[4] || USB_TX_Buffer[5] || USB_TX_Buffer[6])
-	  {
-		  USB_TX_Buffer[0] = 4;	//   REPORT_ID (4)
-		  USBDataOutReady = SET;
-	  }
-	  else
-		  USBDataOutReady = RESET;
-
-	  USB_TX_Buffer[7] = 0x66;
-	  USB_TX_Buffer[8] = 0x66;
-
-	  if(USBDataOutReady == SET)
-		  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,USB_TX_Buffer,ARRAY2HOST+1); // To send usb buffer to PC
-
-//	  HAL_Delay(50);*/
+}  
  
 
 
